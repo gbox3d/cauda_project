@@ -29,7 +29,7 @@ from detectron2.data.datasets import register_coco_instances
 print(f'detectron : {detectron2.__version__}')
 #%%
 # dataset_path = './temp'
-dataset_name = 'dic_1009'
+dataset_name = 'all'
 # annofile = 'train.json'
 
 
@@ -51,8 +51,8 @@ register_coco_instances(
     metadata = {
         "description": f"hello {dataset_name} dataset",
         },
-    json_file = './temp/dic_1009/train.json',
-    image_root = '../../datasets/bitles/dic_1009/voc'
+    json_file = './temp/all/anno.json',
+    image_root = '../../datasets/bitles/images'
     )
 #%%
 dataset_dicts = DatasetCatalog.get(f"{dataset_name}")
@@ -75,7 +75,7 @@ for d in random.sample(dataset_dicts, 5):
 
 # %% pillow 로 출력하기 
 
-_d = dataset_dicts[7]
+_d = dataset_dicts[70]
 img = cv2.imread(_d["file_name"])
 visualizer = Visualizer(img[:, :, ::-1], metadata=fruits_nuts_metadata, scale=1)
 vis = visualizer.draw_dataset_dict(_d)
