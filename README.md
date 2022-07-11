@@ -14,9 +14,10 @@ python ./coco_tools/coco_spliter.py --img-path=/home/ubiqos-ai2/work/datasets/bi
 # config 파일 만들기 
 python make_train_cfg.py --eval-period=100 --epoch=300 --dataset-root=./temp  --dataset-name=all  --batch=6 --base-config-file=COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml
 
+
 # train
 python train_net.py --config-file ./configs/dic_1009/config.yaml --dataset-path=./temp --dataset-name=dic_1009 --image-root=/home/ubiqos-ai2/work/datasets/bitles/dic_1009/voc --num-gpus 1
-python train_net.py --config-file ./configs/all/config.yaml --dataset-path=./temp --dataset-name=all --image-root=/home/ubiqos-ai2/work/datasets/bitles/images --num-gpus 1
+
 
 ```
 

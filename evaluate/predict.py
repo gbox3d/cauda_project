@@ -40,17 +40,19 @@ print(f'detectron : {detectron2.__version__}')
 #%%
 weight_path = './output/all'
 image_path = '/home/ubiqos-ai2/work/datasets/bitles/images/1653206225898.jpeg'
-save_name = './temp/_out.json'
+output_path = './temp/_out.json'
 
 #%%
 import argparse
 parser = argparse.ArgumentParser(description="coco dataset spliter")
 parser.add_argument('--weights-path','-w', type=str, help='help : wights path')
 parser.add_argument('--image-path','-i', type=str,help='help : image path')
+parser.add_argument('--output','-o', type=str,help='help : save name')
     
 _args = parser.parse_args()
 weight_path = _args.weights_path
 image_path = _args.image_path
+output_path = _args.output
 
 print(f'wight path : {weight_path}')
 
@@ -93,10 +95,10 @@ _result = [  {
 
 # print(_result)
 # json.dumps(_result)
-with open(save_name, 'w') as f:
+with open(f'{output_path}/_out.json', 'w') as f:
     json.dump(_result, f,cls=NumpyJsonEncoder)
     
-print(f'output result to {save_name}')
+print(f'output result to {output_path}')
 #%% 결과 이미지 출력 
 _img = img.copy()
 for i,gen_mask in enumerate(generic_masks) :
@@ -110,5 +112,6 @@ for i,gen_mask in enumerate(generic_masks) :
                          (int(pred_boxes[i][2]), int(pred_boxes[i][3]) ), # 우하
                          (0,255,0), thickness=4) 
 
-cv2.imwrite('./temp/_out.jpg',_img)
-print(f'predict result image saved to ./temp/_out.jpg')
+cv2.imwrite(f'{output_path}/_out.jpg',_img)
+
+print(f'predict result image saved to {output_path}')

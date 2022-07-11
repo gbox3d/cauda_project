@@ -131,4 +131,6 @@ dmypy.json
 temp/
 configs/
 output/
-coco_tools/_cmd.yaml
+cmd.yaml
+
+./evaluate/result
