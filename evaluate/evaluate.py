@@ -45,8 +45,6 @@ with open('./cmd.yaml', 'r') as f:
 
 print(cmdConfig)
 
-
-
 # print(f'detectron : {detectron2.__version__}')
 #%%
 print(f' {datetime.datetime.now()} torch : {torch.__version__} cuda : {torch.cuda.is_available()}  cv version : {cv2.__version__}' )
@@ -57,40 +55,14 @@ _anno_file = cmdConfig['anno_file']
 _image_path = cmdConfig['image_path']
 _result_image_dir = cmdConfig['result_image_dir']
 
-#%%
-# parser = argparse.ArgumentParser(description="argument parser sample")
-# parser.add_argument('--base-dir', type=str)
-# parser.add_argument('--anno-file', type=str)
-# _args = parser.parse_args()
-
-# base_path = _args.base_dir
-# # test_file = _args.
-# _anno_file = os.path.join(base_path,_args.anno_file)
-
-#%%
-# _result_image_dir = os.path.join(base_path ,'result_images')
-
-# if not os.path.isdir(_result_image_dir) :
-#     os.mkdir(_result_image_dir)
-#     # print('make dir : ',_result_image_dir)
-# else :
-#     # print('skip make dir : ',_result_image_dir)
-#     pass
-
-
-#%%
-
-
 register_coco_instances(
     f"test_set",
     {},
-    # os.path.join(dataset_path,dataset_name,d,anno_file_name),
     _anno_file,
     image_root=_image_path
     )
 
 test_dataset_dicts = DatasetCatalog.get(f"test_set")
-# _meta_data = get_uclidformat_metadata(_anno_file)
 print(f' {datetime.datetime.now()} :  total test images : {len(test_dataset_dicts)}')
 
 #%% 
@@ -158,7 +130,8 @@ for _d in test_dataset_dicts :
         iou_sum += _maxiou
         _temp += _maxiou
         _count += 1
-    print( f'  {_d["file_name"]} miou {_temp / len(pred_classes)}')
+    # iou 값 총합을 전체 찾은갯수 로나누어 평균 iou 구하기
+    print( f'  {_d["file_name"]} miou {_temp / len(pred_classes)}') # 이미지별 miou 구하기
 
     tp = 0
     fp = 0
@@ -170,13 +143,14 @@ for _d in test_dataset_dicts :
             iou = get_mask_iou(pred_mask,_gt_anno,pred_class)
             # print( f" {i} : {iou}" )
             if iou > 0.5 :
-                tp += 1
+                tp += 1 # true positive , correct prediction
                 _found = True
                 break;
         if not _found :
-            fp += 1
+            fp += 1 # false positive, 없는데 있음 
 
-    fn = 0
+    #tn = 0 # true negative , 없는데 없다고함
+    fn = 0 # false negative , 있는데 없다고함 
     for _gt_anno in ground_truth_ano :
         _found = False
         for i,pred_mask in enumerate(pred_masks) :

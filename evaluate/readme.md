@@ -13,4 +13,11 @@ python predict.py -w ../output/all/ -i ../../../datasets/bitles/images/165320622
 
 ## 평가 방법
 
+true positive  : tp , 있는것을 있다고 예측한 것  
+false positive : fp , 있는것을 없다고 예측한 것  
+true negative  : tn , 없는것을 없다고 예측한 것 (여기서는 사용하지않음)  
+false negative : fn , 없는것을 있다고 예측한 것  
+
+
+
 

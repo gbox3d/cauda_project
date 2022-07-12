@@ -133,4 +133,6 @@ configs/
 output/
 cmd.yaml
 
-./evaluate/result
+evaluate/result/*
+evaluate/detection_result/*
+evaluate/ground_truth/*
