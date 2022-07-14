@@ -55,8 +55,8 @@ def _parseXml(annotation_path,image_path,filename,classes) :
             # ymax =  float(_bbox.find('ymax').text)
             
             obj = {
-                'bbox': [ xmin, ymin, round(xmax-xmin,2), round(ymax-ymin,2)],
-                'bbox_mode': BoxMode.XYWH_ABS,
+                'bbox': [ round(xmin), round(ymin),round(xmax), round(ymax)],
+                'bbox_mode': BoxMode.XYXY_ABS,
                 'category_id': classes.index(_label),
                 "iscrowd": 0,
                 "image_id": imgObj["id"]
@@ -65,7 +65,7 @@ def _parseXml(annotation_path,image_path,filename,classes) :
         else:
             segment = member.findall('segmentation')
             
-            _poly= np.array([ [ round(float(_seg.find('x').text),2),round(float(_seg.find('y').text),2)] for _seg in segment])
+            _poly= np.array([ [ round(float(_seg.find('x').text)),round(float(_seg.find('y').text))] for _seg in segment])
 
             xmin = np.min(_poly[:,0])
             ymin = np.min(_poly[:,1])
@@ -77,15 +77,15 @@ def _parseXml(annotation_path,image_path,filename,classes) :
             #     _y = float(_seg.find('y').text)
             _poly = _poly.flatten().tolist()
             obj = {
-                'bbox': [ xmin, ymin, round(xmax-xmin,2), round(ymax-ymin,2)],
-                'bbox_mode': BoxMode.XYWH_ABS,
+                'bbox': [ round(xmin),round( ymin), round(xmax), round(ymax)],
+                'bbox_mode': BoxMode.XYXY_ABS,
                 'category_id': classes.index(_label),
                 "iscrowd": 0,
                 "segmentation": [ _poly],
                 "image_id": imgObj["id"]
             }
             anno_objs.append(obj)
-        obj['area'] = obj['bbox'][2] * obj['bbox'][3]
+        obj['area'] = (obj['bbox'][2] - obj['bbox'][0]) * (obj['bbox'][3] - obj['bbox'][1])
         obj['id'] = uuid.uuid1().int>>64
     # record["annotations"] = anno_objs
     return {
@@ -103,7 +103,7 @@ def loadVocDataset(annotation_path,image_path,classes,superset=None) :
         "info": {
             "description": "daisy ai solution",
             "url": "",
-            "version": "1",
+            "version": "1.1",
             "date_created": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         },
         "images": [],
