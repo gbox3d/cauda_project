@@ -1,6 +1,0 @@
-merge :
-  list :
-    - '../temp/dic_1004/anno.json'
-    - '../temp/dic_1009/anno.json'
-  save_name : '../temp/all/anno.json'
-

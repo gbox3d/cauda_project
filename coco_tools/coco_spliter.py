@@ -34,17 +34,18 @@ def _saveData(image_dir,save_name,_dataObj,_img_set):
                 _imginfo['width'] = img.shape[1]
                 _imginfo['height'] = img.shape[0]
             print(f'{ int(img_index/len(_img_set) * 100) } %',end='\r')
-            
-            
 
         # if __dataObj['meta'] is not None:
+        # if "meta" in __dataObj.keys():
+        #     _metaData = list({v['id']:v for v in __dataObj['meta']}.values())
+        #     __dataObj['meta'] = [ _meta for _meta in _metaData if _meta['id'] in [_img['meta_id'] for _img in _img_set] ]
+        #     __dataObj['meta']['categories'] = _dataObj['meta']['categories']
+        #     print(__dataObj['meta'])
+        #     print('meta 정보 저장 완료')
+        
         if "meta" in __dataObj.keys():
-            __dataObj['meta']['categories'] = _dataObj['meta']['categories']
             _metaData = list({v['id']:v for v in __dataObj['meta']}.values())
             __dataObj['meta'] = [ _meta for _meta in _metaData if _meta['id'] in [_img['meta_id'] for _img in _img_set] ]
-            print(__dataObj['meta'])
-            print('meta 정보 저장 완료')
-            
         
         __dataObj['annotations'] = [ _anno for _anno in _dataObj['annotations'] if _anno['image_id'] in [_img['id'] for _img in _img_set] ]
         
@@ -62,11 +63,14 @@ def _saveData(image_dir,save_name,_dataObj,_img_set):
                     anno['segmentation'] = [anno['segmentation']]
             if anno['iscrowd'] == 'Y':
                 anno['iscrowd'] = 0
+            # print(f'area : {anno["area"] , anno["bbox"][2]*anno["bbox"][3]}')
+            # anno["area"] = anno["bbox"][2]*anno["bbox"][3]
 
 
 
         #save json
         #../../../../datasets/mushroom_data/yangsongyi/_label/train.json
+        os.makedirs(os.path.dirname(save_name), exist_ok=True) # make dir if not exist
         with open(save_name, 'w') as f:
             anno_num = len(__dataObj["annotations"])
             print(f'{save_name} saved annotaion {anno_num} / img {len(_img_set)}')
@@ -110,9 +114,9 @@ def split_CocoDataSetAnnotaion(image_dir, json_file,train_ratio=0.8,test_ratio=0
                       _dataObj['images'][start_index: ])
             
 #%%
-image_path = '/home/ubiqos-ai2/work/visionApp/datasets/fruts_nuts/images'
-json_file = '/home/ubiqos-ai2/work/visionApp/datasets/fruts_nuts/trainval.json'
-output_path = './temp/fruit'
+image_path = '/home/home/ubiqos-ai2/work/datasets/bitles/images'
+json_file = '/home/ubiqos-ai2/work/visionApp/cauda_project/temp/all/anno.json'
+output_path = './temp/cauda'
 train_ratio = 0.8
 test_ratio = 0
 val_ratio = 0
