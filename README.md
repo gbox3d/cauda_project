@@ -10,6 +10,7 @@ python ./coco_tools/voc2coco.py -d=/home/ubiqos-ai2/work/datasets/bitles -n=dic_
 PYTHONPATH=./coco_tools python./coco_tools/merge.py
 
 python ./coco_tools/coco_spliter.py --img-path=/home/ubiqos-ai2/work/datasets/bitles/images --json-path=./temp/all/anno.json --output-path=./temp/all --train-ratio=0.8 --test-ratio=0.1
+python coco_spliter.py --img-path=/home/ubiqos-ai2/work/visionApp/datasets/fruts_nuts/images --json-path=/home/ubiqos-ai2/work/visionApp/datasets/fruts_nuts/trainval.json --output-path=../temp/fruit --train-ratio=0.8 
 
 # config 파일 만들기 
 python make_train_cfg.py --eval-period=100 --epoch=300 --dataset-root=./temp  --dataset-name=all  --batch=6 --base-config-file=COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml
@@ -17,6 +18,7 @@ python make_train_cfg.py --eval-period=100 --epoch=300 --dataset-root=./temp  --
 
 # train
 python train_net.py --config-file ./configs/dic_1009/config.yaml --dataset-path=./temp --dataset-name=dic_1009 --image-root=/home/ubiqos-ai2/work/datasets/bitles/dic_1009/voc --num-gpus 1
+python train_net.py --config-file ./configs/all/config.yaml --dataset-path=./temp --dataset-name=all --image-root=/home/ubiqos-ai2/work/datasets/bitles/images --num-gpus 1 --resume
 
 
 ```
