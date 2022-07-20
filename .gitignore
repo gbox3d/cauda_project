@@ -136,3 +136,11 @@ cmd.yaml
 evaluate/result/*
 evaluate/detection_result/*
 evaluate/ground_truth/*
+
+dataset/images/*
+settings/*
+!settings/cauda.yaml
+!settings/cmd.yaml
+
+
+

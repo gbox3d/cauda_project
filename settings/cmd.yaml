@@ -1,0 +1,6 @@
+merge :
+  list :
+    - './dataset/dic_1004/anno.json'
+    - './dataset/dic_1009/anno.json'
+  save_name : './dataset/all.json'
+

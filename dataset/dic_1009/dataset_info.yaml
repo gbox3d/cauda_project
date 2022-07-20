@@ -1,0 +1,13 @@
+---
+  name: "dic_1009"
+  class_names: 
+    - "ANT"
+    - "HEAD"
+    - "URS"
+    - "FULL"
+    - "CAUDA"
+    - "SIPH"
+    - "BODY"
+    - "URA"
+  base_path: "/home/ubiqos/work/dataset/test1/dic_1009"
+  imgsz: 640

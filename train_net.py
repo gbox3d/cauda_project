@@ -44,6 +44,7 @@ from detectron2.data import DatasetMapper, build_detection_test_loader
 # import LossEvalHook 
 # import customEvaluator
 import utils
+import yaml
 
 def build_evaluator(cfg, dataset_name, output_folder=None):
     """
@@ -142,22 +143,17 @@ def setup(args):
     """
     Create configs and perform basic setups.
     """
-    # utils.loadCocoDataset(
-    #     dataset_path = args.dataset_path,
-    #     image_root = args.image_root,
-    #     # dataset_name = "AmericanMushromms")
-    #     nameset='',
-    #     dataset_name = args.dataset_name)
     
-    dataset_path = args.dataset_path
-    datasetname = args.dataset_name
-    image_root = args.image_root
-    
-    utils.loadCocoDataset(
-        dataset_path = dataset_path,
-        dataset_name = datasetname,
-        image_root=image_root
-    )
+    settings_file = args.settings
+    with open(settings_file) as f :
+        _config = yaml.load(f, Loader=yaml.FullLoader)
+        
+    register_coco_instances('train', {}, 
+        _config['train_set']['anno'], 
+        _config['train_set']['img_dir'])
+    register_coco_instances('test',{},
+        _config['test_set']['anno'],
+        _config['test_set']['img_dir'])
     
     cfg = get_cfg()
     cfg.merge_from_file(args.config_file)
@@ -197,14 +193,16 @@ def main(args):
 
 
 if __name__ == "__main__":
+
     _argParser =  default_argument_parser()
-
-    _argParser.add_argument('--dataset-path', type=str, default='../../datasets/mushroom_data')
-    _argParser.add_argument('--dataset-name', type=str, default='yangsongyi')
-    _argParser.add_argument('--image-root', type=str, default='_image')
-
-    args = _argParser.parse_args()
+    _argParser.add_argument('-s','--settings', type=str, default='./settings.yaml')
     
+    # _argParser.add_argument('--dataset-path', type=str, default='../../datasets/mushroom_data')
+    # _argParser.add_argument('--dataset-name', type=str, default='yangsongyi')
+    # _argParser.add_argument('--image-root', type=str, default='_image')
+
+    # args = default_argument_parser().parse_args()
+    args = _argParser.parse_args()
     
     print("Command Line Args:", args)
     launch(
