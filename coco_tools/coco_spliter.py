@@ -6,7 +6,7 @@ import numpy as np
 
 import json
 
-from detectron2.structures import BoxMode
+# from detectron2.structures import BoxMode
 
 #%%
 def _saveData(image_dir,save_name,_dataObj,_img_set):
