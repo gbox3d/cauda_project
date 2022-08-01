@@ -16,6 +16,7 @@ import json
 
 # Setup detectron2 logger
 import detectron2
+import yaml
 
 # import some common detectron2 utilities
 from detectron2 import model_zoo
@@ -38,23 +39,33 @@ class NumpyJsonEncoder(json.JSONEncoder):
 
 print(f'detectron : {detectron2.__version__}')
 #%%
-weight_path = './output/all'
-image_path = '/home/ubiqos-ai2/work/datasets/bitles/images/1653206225898.jpeg'
-output_path = './temp/_out.json'
+# isNoteBook = True
+# weight_path = '/home/ubiqos-ai2/work/visionApp/cauda_project/output/mask_rcnn_X_101_32x8d_FPN_3x'
+# image_path = '/home/ubiqos-ai2/work/visionApp/cauda_project/1655858423382.jpg'
 
-#%%
-import argparse
-parser = argparse.ArgumentParser(description="coco dataset spliter")
-parser.add_argument('--weights-path','-w', type=str, help='help : wights path')
-parser.add_argument('--image-path','-i', type=str,help='help : image path')
-parser.add_argument('--output','-o', type=str,help='help : save name')
+# #%%
+# isNoteBook = True
+
+# import argparse
+# parser = argparse.ArgumentParser(description="coco dataset spliter")
+# parser.add_argument('--weights-path','-w', type=str, help='help : wights path')
+# parser.add_argument('--image-path','-i', type=str,help='help : image path')
     
-_args = parser.parse_args()
-weight_path = _args.weights_path
-image_path = _args.image_path
-output_path = _args.output
+# _args = parser.parse_args()
+# weight_path = _args.weights_path
+# image_path = _args.image_path
+# output_path = _args.output
 
-print(f'wight path : {weight_path}')
+# print(f'wight path : {weight_path}')
+
+with open('./cmd.yaml', 'r') as f:
+    cmdConfig = yaml.load(f,Loader=yaml.FullLoader)['predict']
+    
+    isNoteBook = cmdConfig['isNoteBook']
+    weight_path = cmdConfig['weight_path']
+    image_path = cmdConfig['image_path']
+    
+
 
 
 #%% 
@@ -83,6 +94,7 @@ pred_boxes = np.array([box.cpu().numpy() for box in outputs["instances"].pred_bo
 
 print(f'found {len(pred_boxes)} objects')
 
+#%%
 # print(generic_masks)
 _result = [  { 
               'score' : pred_scores[i],
@@ -95,10 +107,10 @@ _result = [  {
 
 # print(_result)
 # json.dumps(_result)
-with open(f'{output_path}/_out.json', 'w') as f:
+with open(f'./output/predict.json', 'w') as f:
     json.dump(_result, f,cls=NumpyJsonEncoder)
     
-print(f'output result to {output_path}')
+# print(f'output result to {}')
 #%% 결과 이미지 출력 
 _img = img.copy()
 for i,gen_mask in enumerate(generic_masks) :
@@ -112,6 +124,11 @@ for i,gen_mask in enumerate(generic_masks) :
                          (int(pred_boxes[i][2]), int(pred_boxes[i][3]) ), # 우하
                          (0,255,0), thickness=4) 
 
-cv2.imwrite(f'{output_path}/_out.jpg',_img)
-
-print(f'predict result image saved to {output_path}')
+# print(f'predict result image saved to {output_path}')
+#%%
+if isNoteBook:
+    __img = cv2.cvtColor(_img, cv2.COLOR_BGR2RGB)
+    display( Image.fromarray(__img) )
+# %%
+cv2.imwrite(f'./output/out.jpg',_img)
+# %%

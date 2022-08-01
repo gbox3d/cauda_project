@@ -142,5 +142,6 @@ settings/*
 !settings/cauda.yaml
 !settings/cmd.yaml
 
-
+evaluate/_out*
+sample/*
 
