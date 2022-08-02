@@ -1,3 +1,4 @@
+output_path : "./output"
 evaluate :
   base_path : '/home/ubiqos-ai2/work/visionApp/cauda_project/output/all'
   anno_file : '/home/ubiqos-ai2/work/visionApp/cauda_project/temp/all/test.json'
@@ -5,7 +6,8 @@ evaluate :
   image_path : '/home/ubiqos-ai2/work/datasets/bitles/images/'
 predict :
   isNoteBook : True
-  weight_path : /home/ubiqos-ai2/work/visionApp/cauda_project/output/mask_rcnn_X_101_32x8d_FPN_3x 
-  image_path : /home/ubiqos-ai2/work/visionApp/cauda_project/1655858423382.jpg
+  weight_path : ../output/mask_rcnn_R_50_C4_1x 
+  image_path : ../sample/1655858423382.jpg
+  
 
 

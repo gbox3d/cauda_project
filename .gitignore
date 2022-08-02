@@ -144,4 +144,5 @@ settings/*
 
 evaluate/_out*
 sample/*
+!sample/1651578613317.jpg
 
